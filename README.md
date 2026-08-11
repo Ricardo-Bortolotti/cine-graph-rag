@@ -34,7 +34,6 @@ Ask *what to watch* — and inspect *why* the graph thinks so.
 - [Notebooks](#notebooks)
 - [Insights](#insights)
 - [Repository layout](#repository-layout)
-- [Roadmap](#roadmap)
 - [License](#license)
 
 ---
@@ -119,7 +118,7 @@ flowchart TB
   end
 
   subgraph Store["Knowledge graph"]
-    N4J[("Neo4j\nAura or Docker + GDS + APOC")]
+    N4J[("Neo4j\nAura or Docker")]
   end
 
   subgraph Intelligence["Intelligence"]
@@ -141,6 +140,8 @@ flowchart TB
 
 **Runtimes**
 
+- **Neo4j (Aura or Docker)**
+- **Docker adds GDS + APOC**
 - Local `uv` against Docker Neo4j (`bolt://localhost:7687`) or Neo4j Aura
 - Full stack: Docker Compose (`neo4j` + `ollama` + Streamlit)
 
@@ -152,7 +153,7 @@ flowchart TB
 |---|---|
 | Language | Python 3.11+ |
 | Data | Pandas, Plotly, scikit-learn |
-| Graph | Neo4j 5 (Aura or Community), GDS, APOC |
+| Graph | Neo4j 5 (Aura or Community Docker) |
 | Orchestration | LangChain, `langchain-neo4j`, `langchain-ollama` |
 | Local LLM | Ollama (`llama3.2:3b`, `qwen3:8b`, …) |
 | Metadata | TMDB REST API |
@@ -316,25 +317,6 @@ cine-graph-rag/
 ├── pyproject.toml
 └── .env.example
 ```
-
----
-
-## Roadmap
-
-- [ ] Hybrid GraphRAG + vector index over overviews
-- [ ] Learned edge weights / GNN ranking
-- [ ] Temporal splits and ranking metrics (nDCG, Recall@K)
-- [ ] Streaming enrichment with progress in the UI
-- [ ] FastAPI backend for multi-user demos
-- [ ] CI: lint, Cypher unit tests, Compose smoke test
-
----
-
-## Acknowledgments
-
-- [GroupLens MovieLens](https://grouplens.org/datasets/movielens/)
-- [TMDB](https://www.themoviedb.org/)
-- [Neo4j](https://neo4j.com/) · [LangChain](https://www.langchain.com/) · [Ollama](https://ollama.com/)
 
 ---
 
