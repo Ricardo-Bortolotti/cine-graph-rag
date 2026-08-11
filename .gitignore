@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+*.egg
+
+# Env / secrets (never commit)
+.env
+.env.*
+!.env.example
+
+# UV / tooling
+.python-version
+
+# Jupyter
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# Data (local downloads / extracts)
+data/raw/**/*.zip
+data/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Neo4j / local
+*.log
+.neo4j/
+.chrome-shot-profile/

@@ -1,0 +1,15 @@
+tmdb:
+  base_url: https://api.themoviedb.org/3
+  language: en-US
+  top_actors: 5
+  requests_per_second: 3
+  max_retries: 5
+  timeout_seconds: 30
+
+neo4j:
+  batch_size: 100
+
+data:
+  links_csv: data/raw/ml-latest-small/ml-latest-small/links.csv
+  # Skip movies already marked tmdbEnriched=true (idempotent re-runs)
+  skip_enriched: true
