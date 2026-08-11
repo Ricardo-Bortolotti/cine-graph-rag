@@ -11,6 +11,12 @@ Pipeline:
   1) LLM generates Cypher from the natural-language question + graph schema
   2) Cypher is executed against Neo4j
   3) LLM turns query results into a natural-language answer
+
+This is not the path ranker (`recommender/graph_recommender.py`). Offline, on a
+30-question gold set with qwen3:8b, this pipeline beat TF-IDF vector RAG on
+factual accuracy (29/30 vs 22/30) at the same retrieval coverage — the win is
+structured lookup, multi-hop shared-cast questions, and Cypher-level
+explainability. See docs/graph_rag.md and eval/qa_eval.py.
 """
 
 from __future__ import annotations
@@ -18,6 +24,7 @@ from __future__ import annotations
 import argparse
 import logging
 import os
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -25,6 +32,7 @@ from typing import Any
 
 from dotenv import load_dotenv
 from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
+from langchain_core.runnables import RunnableLambda
 from langchain_neo4j import GraphCypherQAChain, Neo4jGraph
 from langchain_ollama import ChatOllama
 
@@ -119,6 +127,35 @@ RETURN m.title AS title, collect(g.name) AS genres
 LIMIT 1
 """.strip(),
     },
+    {
+        "question": "Who directed Interstellar?",
+        "query": """
+MATCH (m:Movie)-[:DIRECTED_BY]->(d:Director)
+WHERE toLower(m.title) CONTAINS toLower('Interstellar')
+RETURN m.title AS title, collect(d.name) AS directors
+LIMIT 1
+""".strip(),
+    },
+    {
+        "question": "Which actors appear in Pulp Fiction?",
+        "query": """
+MATCH (m:Movie)-[:ACTED_BY]->(a:Actor)
+WHERE toLower(m.title) CONTAINS toLower('Pulp Fiction')
+RETURN m.title AS title, collect(a.name)[0..10] AS actors
+LIMIT 1
+""".strip(),
+    },
+    {
+        "question": "Which actors appear in both The Matrix (1999) and The Matrix Reloaded?",
+        "query": """
+MATCH (a:Movie)-[:ACTED_BY]->(p:Actor)<-[:ACTED_BY]-(b:Movie)
+WHERE toLower(a.title) CONTAINS 'matrix'
+  AND a.title CONTAINS '1999'
+  AND toLower(b.title) CONTAINS 'reloaded'
+RETURN p.name AS actor
+LIMIT 15
+""".strip(),
+    },
 ]
 
 EXAMPLE_PROMPT = PromptTemplate(
@@ -140,6 +177,7 @@ Rules:
 - For recommendations, traverse HAS_GENRE, DIRECTED_BY, ACTED_BY, HAS_KEYWORD and/or co-RATED users.
 - Return human-readable columns (title, name, rating aggregates) when possible.
 - Do not wrap the Cypher in markdown fences.
+- Reply with ONLY the Cypher statement. No preamble such as "Here is the query".
 
 Examples:
 """
@@ -178,6 +216,42 @@ def build_qa_prompt() -> PromptTemplate:
         input_variables=["question", "context"],
         template=QA_TEMPLATE,
     )
+
+
+_CYPHER_START = re.compile(
+    r"(?im)^\s*(MATCH|OPTIONAL\s+MATCH|WITH|UNWIND|RETURN|CALL|USE|CYPHER)\b"
+)
+_CYPHER_CONTINUE = re.compile(
+    r"(?i)^\s*(LIMIT|ORDER BY|SKIP|UNION|AND|OR|WHERE|WITH|RETURN|OPTIONAL|"
+    r"MATCH|UNWIND|CALL|USE|CYPHER|,|//|/\*|\*|\)|\}|\]|`)"
+)
+
+
+def strip_cypher_preamble(text: str) -> str:
+    """Drop 'Here is the Cypher…' prose that small local models prepend."""
+    text = (text or "").strip()
+    fenced = re.search(r"```(?:cypher)?\s*([\s\S]*?)```", text, re.I)
+    if fenced:
+        text = fenced.group(1).strip()
+    match = _CYPHER_START.search(text)
+    if match:
+        text = text[match.start() :]
+    kept: list[str] = []
+    seen_return = False
+    for line in text.splitlines():
+        if re.match(r"(?i)^\s*RETURN\b", line):
+            seen_return = True
+            kept.append(line)
+            continue
+        if (
+            seen_return
+            and line.strip()
+            and not _CYPHER_CONTINUE.match(line)
+            and not line.startswith(" ")
+        ):
+            break
+        kept.append(line)
+    return "\n".join(kept).strip().strip("`")
 
 
 # ---------------------------------------------------------------------------
@@ -278,6 +352,10 @@ class GraphRAGSystem:
     """
     Modular GraphRAG pipeline:
       question → Cypher generation → Neo4j execution → LLM answer
+
+    Better than chunk RAG when the answer is a relationship (shared director /
+    cast), not a prose snippet. Needs a model that can write Cypher (qwen3:8b
+    in the published eval; llama3.2:3b often fails that step).
     """
 
     def __init__(self, config: GraphRAGConfig) -> None:
@@ -286,6 +364,10 @@ class GraphRAGSystem:
         self.cypher_llm = OllamaLLMFactory.create(config, purpose="cypher")
         self.qa_llm = OllamaLLMFactory.create(config, purpose="qa")
         self.chain = self._build_chain()
+        # Small local models often wrap Cypher in prose; LangChain only strips fences.
+        self.chain.cypher_generation_chain = (
+            self.chain.cypher_generation_chain | RunnableLambda(strip_cypher_preamble)
+        )
 
     def _build_chain(self) -> GraphCypherQAChain:
         return GraphCypherQAChain.from_llm(

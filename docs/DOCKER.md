@@ -98,13 +98,20 @@ uv run python graph/enrich_tmdb.py
 
 1. Open http://localhost:8501
 2. **Personalized Recommendations** / **Explain** / **Explorer** / **Analytics**
-3. **Home → GraphRAG** — Ollama must have finished pulling the model
+3. **Home → GraphRAG** — Ollama must have finished pulling the model. Compose defaults to `llama3.2:3b` (small RAM). The published QA win in [`graph_rag.md`](graph_rag.md) used `qwen3:8b`; the 3B model often emits invalid Cypher.
 
 Example questions:
 
 - Recommend movies like Interstellar
 - Show connections between The Matrix and Cloud Atlas
 - Which genres does Toy Story belong to?
+
+Offline eval (from the host, against Bolt + Ollama). This **writes** `eval/latest_results.json`:
+
+```bash
+uv run python scripts/run_evaluation.py --recs --max-users 200
+uv run python scripts/run_evaluation.py --qa --model qwen3:8b
+```
 
 ## 5. Common commands
 

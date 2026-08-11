@@ -7,6 +7,9 @@ Given Movie A and Movie B, find the shortest connecting path in Neo4j and return
 
 Example:
   Interstellar -> Christopher Nolan -> Inception
+
+This is not GraphRAG (no LLM) and not the path ranker. GraphRAG can *talk*
+about a path; this module *finds* the shortest one. See docs/graph_rag.md.
 """
 
 from __future__ import annotations

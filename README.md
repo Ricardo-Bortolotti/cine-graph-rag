@@ -44,7 +44,7 @@ Ask *what to watch* — and inspect *why* the graph thinks so.
 |---|---|
 | **Ingest** | Load users, movies, and `RATED` edges into Neo4j |
 | **Enrich** | Attach genres, directors, actors, and keywords from TMDB |
-| **Recommend** | Rank titles from shared directors, cast, genres, keywords, and co-fans |
+| **Recommend** | Rank titles from shared directors, cast, genres, keywords, and co-fans ([how](docs/graph_recommender.md)) |
 | **Explain** | Return the shortest *meaningful* path between two movies |
 | **Ask** | Generate Cypher from a question, run it on Neo4j, verbalize the evidence |
 | **Explore** | Interactive Pyvis subgraph with search, path highlight, and export |
@@ -93,6 +93,8 @@ Chunk-and-embed RAG is strong on prose. It is weaker when the answer lives in **
 | Why was this recommended? | Opaque similarity | Ranked signals + shortest path |
 
 The LLM does not invent the catalog. It **writes Cypher**, Neo4j returns grounded rows, and the model turns that context into an answer.
+
+That is the explainability gap. A 7-question smoke test on `llama3.2:3b` was too small (and the small model writes bad Cypher). The published run is **30 gold questions** on `qwen3:8b` (who directed X, genres, cast, shared director / actors). GraphRAG beat TF-IDF vector RAG on factual accuracy (**29/30 vs 22/30**) with the **same** retrieval coverage (~93%). It won on lookup (director / genre / cast), on multi-hop shared-cast questions (**0.83 vs 0.50**), and on **explainability** — Cypher rows show *why*, not a nearest-document snippet. Write-up: [`docs/graph_rag.md`](docs/graph_rag.md).
 
 ```text
 Question
@@ -243,10 +245,19 @@ uv run streamlit run app/streamlit_app.py
 ```bash
 uv run python recommender/graph_recommender.py --title "Matrix" --limit 5
 
+How the ranker scores paths: [`docs/graph_recommender.md`](docs/graph_recommender.md)
+
+uv run python scripts/tune_recommender_weights.py --max-users 200 --trials 60
+
 uv run python recommender/explanation_engine.py \
   --title-a "Interstellar" --title-b "Inception"
 
 uv run python rag/graph_rag.py -q "Which genres does Toy Story belong to?" --verbose
+
+Why GraphRAG beats TF-IDF vector RAG on this catalog: [`docs/graph_rag.md`](docs/graph_rag.md)
+
+uv run python scripts/run_evaluation.py --recs --max-users 200
+uv run python scripts/run_evaluation.py --qa --model qwen3:8b
 ```
 
 Example explanation:
@@ -268,6 +279,7 @@ Curated Browser queries: [`docs/graph_eda_cypher.md`](docs/graph_eda_cypher.md)
 | [`02_eda_ml_25m.ipynb`](notebooks/02_eda_ml_25m.ipynb) | Scale checks on MovieLens 25M |
 | [`03_baseline_recommenders.ipynb`](notebooks/03_baseline_recommenders.ipynb) | Popularity, user-CF, item-CF |
 | [`04_graph_analytics.ipynb`](notebooks/04_graph_analytics.ipynb) | GDS: degree, PageRank, similarity, Louvain |
+| [`05_evaluation.ipynb`](notebooks/05_evaluation.ipynb) | Ranking (200 users) vs baselines; GraphRAG vs vector RAG (30 questions) |
 
 Notebook 04 needs **Graph Data Science**. Aura Free does not include GDS — point `.env` at the local Docker Bolt URI.
 
@@ -282,7 +294,12 @@ From EDA and baselines on Latest Small:
 - Item-CF and popularity are strong baselines; raw user-CF is brittle
 - Shared director / cast / keyword paths recover neighbors that pure CF cannot explain
 
-GraphRAG is inspected qualitatively: the generated Cypher and returned rows must support the answer (visible in the UI and via `--verbose`).
+Two larger samples replaced the early smoke tests. Details: [`docs/graph_recommender.md`](docs/graph_recommender.md) and [`docs/graph_rag.md`](docs/graph_rag.md). Notebook: [`notebooks/05_evaluation.ipynb`](notebooks/05_evaluation.ipynb). Snapshot: [`eval/latest_results.json`](eval/latest_results.json).
+
+- **Ranking** (200 users, K=10, 5 liked seeds, same holdout as notebook 03): the graph path ranker beats popularity and item-CF — Hit@10 **0.34 vs ~0.10**, nDCG@10 **0.071 vs ~0.013**. The earlier 20-user / 3-seed snapshot was too small to see this. This is the path ranker, not GraphRAG.
+- **QA** (`qwen3:8b`, 30 gold questions): GraphRAG **29/30** factual vs vector RAG **22/30**. Both retrieved the gold string about as often (~93%). GraphRAG won on **accuracy** (especially shared cast: **0.83 vs 0.50**) and on **explainability** — Cypher rows show *why*, instead of an opaque TF-IDF chunk. A 7-question `llama3.2:3b` run is not the published comparison.
+
+Running notebooks **01–04** does not overwrite those numbers. Notebook **05** only *reads* `eval/latest_results.json` (`RUN_*` defaults to off). The CLI is the only writer. See [`docs/graph_rag.md`](docs/graph_rag.md#re-running-notebooks).
 
 ---
 
@@ -303,16 +320,26 @@ cine-graph-rag/
 │   └── explanation_engine.py     # Shortest-path explanations
 ├── rag/
 │   └── graph_rag.py              # GraphCypherQAChain + Ollama
+├── eval/
+│   ├── split.py                  # Same holdout as notebook 03
+│   ├── ranking.py                # Precision / Recall / nDCG @ K
+│   ├── recommend_eval.py         # Popularity + item-CF + graph
+│   └── qa_eval.py                # Vector RAG vs GraphRAG
 ├── notebooks/
 │   ├── 01_eda_ml_latest_small.ipynb
 │   ├── 02_eda_ml_25m.ipynb
 │   ├── 03_baseline_recommenders.ipynb
-│   └── 04_graph_analytics.ipynb
+│   ├── 04_graph_analytics.ipynb
+│   └── 05_evaluation.ipynb
 ├── docs/
 │   ├── DOCKER.md
+│   ├── graph_recommender.md        # Path ranker (not GraphRAG)
+│   ├── graph_rag.md                # GraphRAG vs TF-IDF vector RAG
 │   ├── graph_eda_cypher.md
 │   └── assets/                   # UI screenshots
 ├── scripts/
+│   ├── run_evaluation.py         # Writes eval/latest_results.json
+│   └── tune_recommender_weights.py
 ├── docker-compose.yml
 ├── pyproject.toml
 └── .env.example

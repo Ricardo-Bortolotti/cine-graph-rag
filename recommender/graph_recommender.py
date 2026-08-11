@@ -7,12 +7,17 @@ Recommendation signals (seed movie → candidates):
   4. Graph traversal — shared keywords + co-rating users (HAS_KEYWORD, RATED)
 
 Each candidate is ranked by a weighted score and returned with explanation paths.
+
+This is not GraphRAG (no LLM). How scoring works: docs/graph_recommender.md.
+Offline win vs popularity / item-CF: 200 users, Hit@10 0.34 vs ~0.10.
+GraphRAG QA is a separate comparison: docs/graph_rag.md.
 """
 
 from __future__ import annotations
 
 import argparse
 import logging
+import math
 import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -28,7 +33,8 @@ from neo4j_config import connect_neo4j  # noqa: E402
 
 LOGGER = logging.getLogger("graph_recommender")
 
-# Relative signal weights (tuned for interpretability, not ML optimality)
+# Relative signal weights (tuned for interpretability, not ML optimality).
+# Offline search: `uv run python scripts/tune_recommender_weights.py`
 WEIGHTS = {
     "director": 5.0,
     "actor": 3.0,
@@ -36,6 +42,50 @@ WEIGHTS = {
     "genre": 1.0,
     "co_rating": 1.5,
 }
+SIGNAL_KEYS = tuple(WEIGHTS)
+UNIT_WEIGHTS = {key: 1.0 for key in SIGNAL_KEYS}
+PRIOR_COEF = 0.25
+
+
+def rating_prior(
+    n_ratings: int,
+    avg_rating: float | None,
+    coef: float = PRIOR_COEF,
+) -> float:
+    if n_ratings <= 0 or avg_rating is None:
+        return 0.0
+    return float(coef) * math.log10(n_ratings + 1) * (float(avg_rating) / 5.0)
+
+
+def evidence_raw_counts(
+    evidence: list,
+    queried_weights: dict[str, float] | None = None,
+) -> dict[str, float]:
+    """Undo query-time weights so a candidate can be rescored offline."""
+    scale = queried_weights or UNIT_WEIGHTS
+    raw = {key: 0.0 for key in SIGNAL_KEYS}
+    for item in evidence:
+        signal = item.signal if hasattr(item, "signal") else item["signal"]
+        points = item.points if hasattr(item, "points") else float(item["points"])
+        weight = float(scale.get(signal, 1.0) or 1.0)
+        raw[signal] = raw.get(signal, 0.0) + points / weight
+    return raw
+
+
+def score_raw_features(
+    raw: dict[str, float],
+    weights: dict[str, float],
+    *,
+    n_ratings: int = 0,
+    avg_rating: float | None = None,
+    n_seed_hits: int = 1,
+    prior_coef: float = PRIOR_COEF,
+) -> float:
+    total = 0.0
+    for key in SIGNAL_KEYS:
+        total += float(weights.get(key, 0.0)) * float(raw.get(key, 0.0))
+    total += n_seed_hits * rating_prior(n_ratings, avg_rating, prior_coef)
+    return total
 
 RECOMMEND_CYPHER = """
 MATCH (seed:Movie)
@@ -294,6 +344,34 @@ class GraphRecommender:
             )
         recs = self.recommend(seed.movie_id, limit=limit)
         return seed, recs
+
+    def recommend_for_user(
+        self,
+        seed_movie_ids: list[int],
+        seen_ids: set[int] | None = None,
+        limit: int = 10,
+        per_seed_limit: int = 25,
+    ) -> list[Recommendation]:
+        """Aggregate seed-movie graph rankings into a user-level top-N list."""
+        blocked = set(seen_ids or ())
+        blocked.update(int(mid) for mid in seed_movie_ids)
+        scores: dict[int, float] = {}
+        best: dict[int, Recommendation] = {}
+        for seed_id in seed_movie_ids:
+            for rec in self.recommend(int(seed_id), limit=per_seed_limit):
+                if rec.movie_id in blocked:
+                    continue
+                scores[rec.movie_id] = scores.get(rec.movie_id, 0.0) + rec.score
+                previous = best.get(rec.movie_id)
+                if previous is None or rec.score > previous.score:
+                    best[rec.movie_id] = rec
+        ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)[:limit]
+        out: list[Recommendation] = []
+        for movie_id, score in ranked:
+            rec = best[movie_id]
+            rec.score = score
+            out.append(rec)
+        return out
 
 
 def setup_logging(verbose: bool) -> None:

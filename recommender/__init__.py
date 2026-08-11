@@ -1,1 +1,1 @@
-"""Graph-based movie recommendation utilities."""
+"""Graph-based movie recommendation utilities (path ranker, not GraphRAG)."""

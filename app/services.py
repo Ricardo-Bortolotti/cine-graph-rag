@@ -163,6 +163,7 @@ def analytics_relationship_counts() -> list[dict[str, Any]]:
 
 @st.cache_resource(show_spinner="Loading GraphRAG (Ollama + Neo4j schema)...")
 def get_graph_rag(verbose: bool = False):
+    """Question → Cypher → Neo4j rows → verbalized answer (not the path ranker)."""
     from graph_rag import GraphRAGConfig, GraphRAGSystem
 
     config = GraphRAGConfig.from_env(verbose=verbose)

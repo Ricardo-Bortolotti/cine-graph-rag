@@ -247,7 +247,7 @@ Use the queries above to write short insights:
 1. **Scale** — how many nodes/relationships per label/type.
 2. **Quality** — enrichment coverage; TMDB 404s leave some movies without metadata.
 3. **Behavior** — rating skew; heavy-tailed user activity.
-4. **Content graph** — genres/actors/directors/keywords create multi-hop paths useful for Graph RAG.
+4. **Content graph** — genres/actors/directors/keywords create multi-hop paths. That is why GraphRAG beats chunk RAG on shared-cast / shared-director questions ([`graph_rag.md`](graph_rag.md)).
 5. **Long tail** — many movies have few ratings → collaborative filtering alone is weak; graph/content edges help.
 
 ---

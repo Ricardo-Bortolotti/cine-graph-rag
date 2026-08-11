@@ -200,7 +200,11 @@ def page_home() -> None:
         )
 
     st.markdown("#### Ask the graph (GraphRAG)")
-    st.caption("LangChain GraphCypherQAChain + Neo4j + local Ollama. The first question can take 1–2 minutes.")
+    st.caption(
+        "LangChain GraphCypherQAChain + Neo4j + local Ollama. "
+        "Best on relational facts (who directed X, shared cast) — the model writes Cypher, Neo4j returns rows. "
+        "The first question can take 1–2 minutes."
+    )
     sample = st.selectbox(
         "Try a sample question",
         [
@@ -640,7 +644,10 @@ def main() -> None:
             """
         )
         st.divider()
-        st.caption("Neo4j and Ollama must be running for GraphRAG.")
+        st.caption(
+            "Neo4j and Ollama must be running for GraphRAG. "
+            "Prefer qwen3:8b — smaller models often emit invalid Cypher."
+        )
 
     pages = [
         st.Page(page_home, title="Home", icon="🏠", default=True),

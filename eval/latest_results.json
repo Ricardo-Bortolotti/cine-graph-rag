@@ -1,0 +1,1193 @@
+{
+  "ranking": [
+    {
+      "method": "popularity",
+      "n_users": 200,
+      "precision@k": 0.012,
+      "recall@k": 0.010254397088243227,
+      "hit_rate@k": 0.105,
+      "ndcg@k": 0.011887089327618222,
+      "ndcg@k_se": 0.0027363132895723624
+    },
+    {
+      "method": "item_based_cf",
+      "n_users": 200,
+      "precision@k": 0.012000000000000002,
+      "recall@k": 0.0128315639724639,
+      "hit_rate@k": 0.1,
+      "ndcg@k": 0.013980135560653193,
+      "ndcg@k_se": 0.0036515365168597025
+    },
+    {
+      "method": "graph_recommender",
+      "n_users": 200,
+      "precision@k": 0.04800000000000001,
+      "recall@k": 0.049049781297730084,
+      "hit_rate@k": 0.34,
+      "ndcg@k": 0.07050712728849455,
+      "ndcg@k_se": 0.008635743744351646
+    }
+  ],
+  "ranking_protocol": {
+    "split": "per-user holdout test_size=0.2 random_state=42",
+    "k": 10,
+    "max_users": 200,
+    "n_seeds": 5,
+    "relevant": "held-out rating >= 4.0"
+  },
+  "qa_summary": [
+    {
+      "method": "graph_rag",
+      "n": 30,
+      "factual_accuracy": 0.9666666666666667,
+      "evidence_in_context": 0.9333333333333333,
+      "errors": 0
+    },
+    {
+      "method": "vector_rag",
+      "n": 30,
+      "factual_accuracy": 0.7333333333333333,
+      "evidence_in_context": 0.9333333333333333,
+      "errors": 0
+    }
+  ],
+  "qa": [
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_interstellar",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_interstellar",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_inception",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_inception",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_matrix",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_matrix",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_pulp",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_pulp",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_shawshank",
+      "factual_correct": false,
+      "evidence_in_context": false,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_shawshank",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_godfather",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_godfather",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_dark_knight",
+      "factual_correct": false,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_dark_knight",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "director",
+      "id": "director_spirited",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "director",
+      "id": "director_spirited",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "genres",
+      "id": "genres_toy_story",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "genres",
+      "id": "genres_toy_story",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "genres",
+      "id": "genres_forrest",
+      "factual_correct": false,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "genres",
+      "id": "genres_forrest",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "genres",
+      "id": "genres_alien",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "genres",
+      "id": "genres_alien",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "genres",
+      "id": "genres_get_out",
+      "factual_correct": false,
+      "evidence_in_context": false,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "genres",
+      "id": "genres_get_out",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "genres",
+      "id": "genres_fury_road",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "genres",
+      "id": "genres_fury_road",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "genres",
+      "id": "genres_whiplash",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "genres",
+      "id": "genres_whiplash",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "actors",
+      "id": "actors_inception",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "actors",
+      "id": "actors_inception",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "actors",
+      "id": "actors_godfather",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "actors",
+      "id": "actors_godfather",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "actors",
+      "id": "actors_pulp",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "actors",
+      "id": "actors_pulp",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "actors",
+      "id": "actors_dark_knight",
+      "factual_correct": false,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "actors",
+      "id": "actors_dark_knight",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "actors",
+      "id": "actors_matrix",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "actors",
+      "id": "actors_matrix",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_director",
+      "id": "shared_director_nolan",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_director",
+      "id": "shared_director_nolan",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_director",
+      "id": "shared_director_nolan_batman",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_director",
+      "id": "shared_director_nolan_batman",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_director",
+      "id": "shared_director_coppola",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_director",
+      "id": "shared_director_coppola",
+      "factual_correct": true,
+      "evidence_in_context": false,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_director",
+      "id": "shared_director_tarantino",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_director",
+      "id": "shared_director_tarantino",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_director",
+      "id": "shared_director_lasseter",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_director",
+      "id": "shared_director_lasseter",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_matrix",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_matrix",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_lotr",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_lotr",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_godfather",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_godfather",
+      "factual_correct": false,
+      "evidence_in_context": false,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_toy_story",
+      "factual_correct": false,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_toy_story",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_batman",
+      "factual_correct": false,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_batman",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "vector_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_oceans",
+      "factual_correct": false,
+      "evidence_in_context": true,
+      "error": ""
+    },
+    {
+      "method": "graph_rag",
+      "kind": "shared_actors",
+      "id": "shared_actors_oceans",
+      "factual_correct": true,
+      "evidence_in_context": true,
+      "error": ""
+    }
+  ],
+  "qa_by_model": {
+    "llama3.2:3b": {
+      "model": "llama3.2:3b",
+      "qa_summary": [
+        {
+          "method": "graph_rag",
+          "n": 7,
+          "factual_accuracy": 0.7142857142857143,
+          "evidence_in_context": 0.7142857142857143,
+          "errors": 0
+        },
+        {
+          "method": "vector_rag",
+          "n": 7,
+          "factual_accuracy": 0.8571428571428571,
+          "evidence_in_context": 1.0,
+          "errors": 0
+        }
+      ]
+    },
+    "qwen3:8b": {
+      "model": "qwen3:8b",
+      "n_questions": 30,
+      "qa_summary": [
+        {
+          "method": "graph_rag",
+          "n": 30,
+          "factual_accuracy": 0.9666666666666667,
+          "evidence_in_context": 0.9333333333333333,
+          "errors": 0
+        },
+        {
+          "method": "vector_rag",
+          "n": 30,
+          "factual_accuracy": 0.7333333333333333,
+          "evidence_in_context": 0.9333333333333333,
+          "errors": 0
+        }
+      ],
+      "qa_by_kind": [
+        {
+          "kind": "actors",
+          "method": "graph_rag",
+          "n": 5,
+          "factual_accuracy": 1.0,
+          "evidence_in_context": 1.0
+        },
+        {
+          "kind": "actors",
+          "method": "vector_rag",
+          "n": 5,
+          "factual_accuracy": 0.8,
+          "evidence_in_context": 1.0
+        },
+        {
+          "kind": "director",
+          "method": "graph_rag",
+          "n": 8,
+          "factual_accuracy": 1.0,
+          "evidence_in_context": 1.0
+        },
+        {
+          "kind": "director",
+          "method": "vector_rag",
+          "n": 8,
+          "factual_accuracy": 0.75,
+          "evidence_in_context": 0.875
+        },
+        {
+          "kind": "genres",
+          "method": "graph_rag",
+          "n": 6,
+          "factual_accuracy": 1.0,
+          "evidence_in_context": 1.0
+        },
+        {
+          "kind": "genres",
+          "method": "vector_rag",
+          "n": 6,
+          "factual_accuracy": 0.6666666666666666,
+          "evidence_in_context": 0.8333333333333334
+        },
+        {
+          "kind": "shared_actors",
+          "method": "graph_rag",
+          "n": 6,
+          "factual_accuracy": 0.8333333333333334,
+          "evidence_in_context": 0.8333333333333334
+        },
+        {
+          "kind": "shared_actors",
+          "method": "vector_rag",
+          "n": 6,
+          "factual_accuracy": 0.5,
+          "evidence_in_context": 1.0
+        },
+        {
+          "kind": "shared_director",
+          "method": "graph_rag",
+          "n": 5,
+          "factual_accuracy": 1.0,
+          "evidence_in_context": 0.8
+        },
+        {
+          "kind": "shared_director",
+          "method": "vector_rag",
+          "n": 5,
+          "factual_accuracy": 1.0,
+          "evidence_in_context": 1.0
+        }
+      ],
+      "qa": [
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_interstellar",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_interstellar",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_inception",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_inception",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_matrix",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_matrix",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_pulp",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_pulp",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_shawshank",
+          "factual_correct": false,
+          "evidence_in_context": false,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_shawshank",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_godfather",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_godfather",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_dark_knight",
+          "factual_correct": false,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_dark_knight",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "director",
+          "id": "director_spirited",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "director",
+          "id": "director_spirited",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "genres",
+          "id": "genres_toy_story",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "genres",
+          "id": "genres_toy_story",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "genres",
+          "id": "genres_forrest",
+          "factual_correct": false,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "genres",
+          "id": "genres_forrest",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "genres",
+          "id": "genres_alien",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "genres",
+          "id": "genres_alien",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "genres",
+          "id": "genres_get_out",
+          "factual_correct": false,
+          "evidence_in_context": false,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "genres",
+          "id": "genres_get_out",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "genres",
+          "id": "genres_fury_road",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "genres",
+          "id": "genres_fury_road",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "genres",
+          "id": "genres_whiplash",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "genres",
+          "id": "genres_whiplash",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "actors",
+          "id": "actors_inception",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "actors",
+          "id": "actors_inception",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "actors",
+          "id": "actors_godfather",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "actors",
+          "id": "actors_godfather",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "actors",
+          "id": "actors_pulp",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "actors",
+          "id": "actors_pulp",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "actors",
+          "id": "actors_dark_knight",
+          "factual_correct": false,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "actors",
+          "id": "actors_dark_knight",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "actors",
+          "id": "actors_matrix",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "actors",
+          "id": "actors_matrix",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_director",
+          "id": "shared_director_nolan",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_director",
+          "id": "shared_director_nolan",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_director",
+          "id": "shared_director_nolan_batman",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_director",
+          "id": "shared_director_nolan_batman",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_director",
+          "id": "shared_director_coppola",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_director",
+          "id": "shared_director_coppola",
+          "factual_correct": true,
+          "evidence_in_context": false,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_director",
+          "id": "shared_director_tarantino",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_director",
+          "id": "shared_director_tarantino",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_director",
+          "id": "shared_director_lasseter",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_director",
+          "id": "shared_director_lasseter",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_matrix",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_matrix",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_lotr",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_lotr",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_godfather",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_godfather",
+          "factual_correct": false,
+          "evidence_in_context": false,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_toy_story",
+          "factual_correct": false,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_toy_story",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_batman",
+          "factual_correct": false,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_batman",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "vector_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_oceans",
+          "factual_correct": false,
+          "evidence_in_context": true,
+          "error": ""
+        },
+        {
+          "method": "graph_rag",
+          "kind": "shared_actors",
+          "id": "shared_actors_oceans",
+          "factual_correct": true,
+          "evidence_in_context": true,
+          "error": ""
+        }
+      ]
+    }
+  },
+  "ranking_paired": [
+    {
+      "left": "graph_recommender",
+      "right": "popularity",
+      "metric": "ndcg_at_k",
+      "n_users": 200,
+      "mean_delta": 0.05862003796087634,
+      "pct_left_better": 0.34,
+      "pct_tie": 0.585,
+      "pct_right_better": 0.075
+    },
+    {
+      "left": "graph_recommender",
+      "right": "popularity",
+      "metric": "hit_rate_at_k",
+      "n_users": 200,
+      "mean_delta": 0.235,
+      "pct_left_better": 0.31,
+      "pct_tie": 0.615,
+      "pct_right_better": 0.075
+    },
+    {
+      "left": "graph_recommender",
+      "right": "popularity",
+      "metric": "precision_at_k",
+      "n_users": 200,
+      "mean_delta": 0.036000000000000004,
+      "pct_left_better": 0.32,
+      "pct_tie": 0.605,
+      "pct_right_better": 0.075
+    },
+    {
+      "left": "graph_recommender",
+      "right": "item_based_cf",
+      "metric": "ndcg_at_k",
+      "n_users": 200,
+      "mean_delta": 0.05652699172784136,
+      "pct_left_better": 0.34,
+      "pct_tie": 0.59,
+      "pct_right_better": 0.07
+    },
+    {
+      "left": "graph_recommender",
+      "right": "item_based_cf",
+      "metric": "hit_rate_at_k",
+      "n_users": 200,
+      "mean_delta": 0.24,
+      "pct_left_better": 0.31,
+      "pct_tie": 0.62,
+      "pct_right_better": 0.07
+    },
+    {
+      "left": "graph_recommender",
+      "right": "item_based_cf",
+      "metric": "precision_at_k",
+      "n_users": 200,
+      "mean_delta": 0.036,
+      "pct_left_better": 0.315,
+      "pct_tie": 0.615,
+      "pct_right_better": 0.07
+    }
+  ]
+}
